@@ -37,6 +37,7 @@
   "backup-restore-success": "Configs and data restored from backup.\nPress the 'Apply' button to changes to take effect.",
   "backup-restore-warning": "Be careful, this action cannot be undone!",
   "backgrounds": "Backgrounds",
+  "background-recursive-search": "Enable recursive background search",
   "before-sleep": "Before sleep",
   "before-sleep-tooltip": "Command to execute before systemd puts the computer to sleep.",
   "bottom": "Bottom",

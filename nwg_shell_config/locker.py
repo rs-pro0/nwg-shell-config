@@ -42,6 +42,7 @@ defaults = {
     "resume-cmd": 'swaymsg "output * dpms on"',
     "before-sleep": "",
     "backgrounds-custom-path": "",
+    "background-search-recursive": False,
     "backgrounds-use-custom-path": False,
     "background-dirs": ["/usr/share/backgrounds/nwg-shell"],
     "background-dirs-once-set": False,
@@ -120,23 +121,31 @@ def set_local_wallpaper():
     dirs = settings["background-dirs"].copy()
     if settings["backgrounds-use-custom-path"] and settings["backgrounds-custom-path"]:
         dirs.append(settings["backgrounds-custom-path"])
-    for d in dirs:
-        for item in os.listdir(d):
-            if os.path.isfile(os.path.join(d, item)):
-                paths.append(os.path.join(d, item))
+
+    if settings["background-search-recursive"]:
+        for d in dirs:
+            for file in subprocess.check_output(("find", d ," -mindepth", "1", "-type", "f"), shell=False).decode().split("\n")[:-1]:
+                if file not in paths:
+                    paths.append(file)
+    else:
+        for d in dirs:
+            for item in os.listdir(d):
+                if os.path.isfile(os.path.join(d, item)):
+                    paths.append(os.path.join(d, item))
     if len(paths) > 0:
-        p = paths[random.randrange(len(paths))]
+        p = random.choice(paths)
         if settings["lockscreen-locker"] == "swaylock":
             subprocess.call("pkill -f swaylock", shell=True)
-            subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(p, pid), shell=True)
+            eprint('swaylock -i "{}" ; kill -n 15 {}'.format(p, pid))
+            subprocess.Popen('swaylock -i "{}" ; kill -n 15 {}'.format(p, pid), shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.call("pkill -f gtklock", shell=True)
 
             eprint(
-                '{} -S -H -T {} -b {} ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p,
+                '{} -S -H -T {} -b "{}" ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p,
                                                                pid))
             subprocess.Popen(
-                '{} -S -H -T {} -b {} ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"],
+                '{} -S -H -T {} -b "{}" ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"],
                                                                p, pid), shell=True)
     else:
         print("No image paths found")

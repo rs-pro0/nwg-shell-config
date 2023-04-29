@@ -22,6 +22,7 @@
   "autotiling": "Autotiling",
   "autotiling-tooltip": "Automatizza la modifica dell'orientamento orizzontale/verticale della finestra divisa.",
   "backgrounds": "Sfondo",
+  "background-recursive-search": "Abilita la ricerca di sfondo ricorsiva",
   "before-sleep": "Prima della sosp.",
   "before-sleep-tooltip": "Comando da eseguire prima che systemd metta il computer in stato di stop.",
   "bottom": "In basso",

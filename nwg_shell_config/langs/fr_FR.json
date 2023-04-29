@@ -22,6 +22,7 @@
   "autotiling": "Tiling automatique",
   "autotiling-tooltip": "Alterne automatiquement entre séparation horizontale/verticale des fenêtres.",
   "backgrounds": "Arrière-plans",
+  "background-recursive-search": "Activer la recherche de fond récursive",
   "before-sleep": "Avant la veille",
   "before-sleep-tooltip": "Commande à exécuter avant que systemd ne mette l'ordinateur en veille.",
   "bottom": "En bas",

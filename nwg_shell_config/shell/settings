@@ -63,6 +63,7 @@
   "resume-cmd": "swaymsg \"output * dpms on\"",
   "before-sleep": "",
   "backgrounds-custom-path": "",
+  "background-search-recursive": false,
   "backgrounds-use-custom-path": false,
   "background-dirs": [
     "/usr/share/backgrounds/nwg-shell"

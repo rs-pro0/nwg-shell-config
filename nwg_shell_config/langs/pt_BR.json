@@ -22,6 +22,7 @@
   "autotiling": "Autotiling",
   "autotiling-tooltip": "Altera a orientação da divisão horizontal/vertical de janela automaticamente.",
   "backgrounds": "Fundos de tela",
+  "background-recursive-search": "Ativar pesquisa de fundo recursivo",
   "before-sleep": "Antes de suspender",
   "before-sleep-tooltip": "Comando para executar antes que o systemd coloque o computador em suspensão.",
   "bottom": "Embaixo",
