@@ -102,14 +102,14 @@ def set_remote_wallpaper():
         r = urllib.request.urlretrieve(url, wallpaper)
         if r[1]["Content-Type"] in ["image/jpeg", "image/png"]:
             if settings["lockscreen-locker"] == "swaylock":
-                subprocess.call("pkill -f swaylock", shell=True)
-                subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(wallpaper, pid), shell=True)
+                subprocess.call(("pkill", "-f", "swaylock"), shell=False)
+                subprocess.Popen(("swaylock", "-i", wallpaper), shell=False)
             elif settings["lockscreen-locker"] == "gtklock":
-                subprocess.call("pkill -f gtklock", shell=True)
+                subprocess.call(("pkill", "-f", "gtklock"), shell=False)
 
-                eprint('{} -S -H -T 10 -b {} ; kill -n 15 {}'.format(gtklock_command(), wallpaper, pid))
-                subprocess.Popen('{} -S -H -T 10 -b {} ; kill -n 15 {}'.format(gtklock_command(), wallpaper, pid),
-                                 shell=True)
+                eprint('{} -S -H -T 10 -b {} '.format(gtklock_command(), wallpaper, pid))
+                subprocess.Popen((gtklock_command().split(), '-S', '-H', '-T', '10', '-b', wallpaper),
+                                 shell=False)
 
     except Exception as e:
         print(e)
@@ -135,27 +135,25 @@ def set_local_wallpaper():
     if len(paths) > 0:
         p = random.choice(paths)
         if settings["lockscreen-locker"] == "swaylock":
-            subprocess.call("pkill -f swaylock", shell=True)
-            eprint('swaylock -i "{}" ; kill -n 15 {}'.format(p, pid))
-            subprocess.Popen('swaylock -i "{}" ; kill -n 15 {}'.format(p, pid), shell=True)
+            subprocess.call(("pkill", "-f", "swaylock"), shell=False)
+            subprocess.Popen(("swaylock", "-i", p), shell=False)
         elif settings["lockscreen-locker"] == "gtklock":
-            subprocess.call("pkill -f gtklock", shell=True)
+            subprocess.call(("pkill", "-f", "gtklock"), shell=False)
 
             eprint(
-                '{} -S -H -T {} -b "{}" ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p,
-                                                               pid))
+                '{} -S -H -T {} -b "{}"'.format(gtklock_command(), settings["gtklock-idle-timeout"], p
+                                                               ))
             subprocess.Popen(
-                '{} -S -H -T {} -b "{}" ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"],
-                                                               p, pid), shell=True)
+                (gtklock_command().split(), "-S", "-H", "-T", settings[gtklock-idle-timeout], "-b", p), shell=False)
     else:
         print("No image paths found")
 
         if settings["lockscreen-locker"] == "swaylock":
-            subprocess.call("pkill -f swaylock", shell=True)
-            subprocess.Popen('exec swaylock -f', shell=True)
+            subprocess.call(("pkill", "-f", "swaylock"), shell=False)
+            subprocess.Popen(("exec", "swaylock", "-f"), shell=False)
         elif settings["lockscreen-locker"] == "gtklock":
-            subprocess.call("pkill -f gtklock", shell=True)
-            subprocess.Popen('exec gtklock -d', shell=True)
+            subprocess.call(("pkill", "-f", "gtklock"), shell=False)
+            subprocess.Popen(("exec", "gtklock", "-d"), shell=False)
 
     sys.exit(0)
 
