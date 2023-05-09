@@ -124,7 +124,7 @@ def set_local_wallpaper():
 
     if settings["background-search-recursive"]:
         for d in dirs:
-            for file in subprocess.check_output(("find", d ," -mindepth", "1", "-type", "f"), shell=False).decode().split("\n")[:-1]:
+            for file in subprocess.check_output(("find", d, "-mindepth", "1", "-type", "f"), shell=False).decode().split("\n")[:-1]:
                 if file not in paths:
                     paths.append(file)
     else:
