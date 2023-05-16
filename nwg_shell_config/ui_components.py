@@ -1347,6 +1347,11 @@ def lockscreen_tab(settings, voc):
     if not fc_btn.get_filename():
         cb_custom_path.set_sensitive(False)
 
+    cb_background_recursive_search = Gtk.CheckButton.new_with_label("{}".format(voc["background-recursive-search"]))
+    cb_background_recursive_search.set_property("halign", Gtk.Align.START)
+    cb_background_recursive_search.connect("toggled", set_from_checkbutton, settings, "background-search-recursive")
+    grid.attach(cb_background_recursive_search, 2, 7, 4, 1)
+
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["unsplash-random-image"]))
     lbl.set_property("halign", Gtk.Align.START)

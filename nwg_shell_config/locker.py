@@ -42,6 +42,7 @@ defaults = {
     "resume-cmd": 'swaymsg "output * dpms on"',
     "before-sleep": "",
     "backgrounds-custom-path": "",
+    "background-search-recursive": False,
     "backgrounds-use-custom-path": False,
     "background-dirs": ["/usr/share/backgrounds/nwg-shell"],
     "background-dirs-once-set": False,
@@ -101,14 +102,14 @@ def set_remote_wallpaper():
         r = urllib.request.urlretrieve(url, wallpaper)
         if r[1]["Content-Type"] in ["image/jpeg", "image/png"]:
             if settings["lockscreen-locker"] == "swaylock":
-                subprocess.call("pkill -f swaylock", shell=True)
-                subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(wallpaper, pid), shell=True)
+                subprocess.call(("pkill", "-f", "swaylock"), shell=False)
+                subprocess.Popen(("swaylock", "-i", wallpaper), shell=False)
             elif settings["lockscreen-locker"] == "gtklock":
-                subprocess.call("pkill -f gtklock", shell=True)
+                subprocess.call(("pkill", "-f", "gtklock"), shell=False)
 
-                eprint('{} -S -H -T 10 -b {} ; kill -n 15 {}'.format(gtklock_command(), wallpaper, pid))
-                subprocess.Popen('{} -S -H -T 10 -b {} ; kill -n 15 {}'.format(gtklock_command(), wallpaper, pid),
-                                 shell=True)
+                eprint('{} -S -H -T 10 -b {} '.format(gtklock_command(), wallpaper, pid))
+                subprocess.Popen((gtklock_command().split(), '-S', '-H', '-T', '10', '-b', wallpaper),
+                                 shell=False)
 
     except Exception as e:
         print(e)
@@ -120,33 +121,39 @@ def set_local_wallpaper():
     dirs = settings["background-dirs"].copy()
     if settings["backgrounds-use-custom-path"] and settings["backgrounds-custom-path"]:
         dirs.append(settings["backgrounds-custom-path"])
-    for d in dirs:
-        for item in os.listdir(d):
-            if os.path.isfile(os.path.join(d, item)):
-                paths.append(os.path.join(d, item))
+
+    if settings["background-search-recursive"]:
+        for d in dirs:
+            for file in subprocess.check_output(("find", d, "-mindepth", "1", "-type", "f"), shell=False).decode().split("\n")[:-1]:
+                if file not in paths:
+                    paths.append(file)
+    else:
+        for d in dirs:
+            for item in os.listdir(d):
+                if os.path.isfile(os.path.join(d, item)):
+                    paths.append(os.path.join(d, item))
     if len(paths) > 0:
-        p = paths[random.randrange(len(paths))]
+        p = random.choice(paths)
         if settings["lockscreen-locker"] == "swaylock":
-            subprocess.call("pkill -f swaylock", shell=True)
-            subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(p, pid), shell=True)
+            subprocess.call(("pkill", "-f", "swaylock"), shell=False)
+            subprocess.Popen(("swaylock", "-i", p), shell=False)
         elif settings["lockscreen-locker"] == "gtklock":
-            subprocess.call("pkill -f gtklock", shell=True)
+            subprocess.call(("pkill", "-f", "gtklock"), shell=False)
 
             eprint(
-                '{} -S -H -T {} -b {} ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p,
-                                                               pid))
+                '{} -S -H -T {} -b "{}"'.format(gtklock_command(), settings["gtklock-idle-timeout"], p
+                                                               ))
             subprocess.Popen(
-                '{} -S -H -T {} -b {} ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"],
-                                                               p, pid), shell=True)
+                (gtklock_command().split(), "-S", "-H", "-T", settings[gtklock-idle-timeout], "-b", p), shell=False)
     else:
         print("No image paths found")
 
         if settings["lockscreen-locker"] == "swaylock":
-            subprocess.call("pkill -f swaylock", shell=True)
-            subprocess.Popen('exec swaylock -f', shell=True)
+            subprocess.call(("pkill", "-f", "swaylock"), shell=False)
+            subprocess.Popen(("exec", "swaylock", "-f"), shell=False)
         elif settings["lockscreen-locker"] == "gtklock":
-            subprocess.call("pkill -f gtklock", shell=True)
-            subprocess.Popen('exec gtklock -d', shell=True)
+            subprocess.call(("pkill", "-f", "gtklock"), shell=False)
+            subprocess.Popen(("exec", "gtklock", "-d"), shell=False)
 
     sys.exit(0)
 

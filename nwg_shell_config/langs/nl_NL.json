@@ -23,6 +23,7 @@
   "autotiling": "Autotiling",
   "autotiling-tooltip": "Automatiseert het wijzigen van de horizontale/verticale split van het venster.",
   "backgrounds": "Achtergronden",
+  "background-recursive-search": "Schakel recursieve achtergrond zoeken in",
   "before-sleep": "Voor de slaapstand",
   "before-sleep-tooltip": "Opdracht die uitgevoerd moet worden voordat systemd de computer in de slaap-stand zet.",
   "bottom": "Onderkant",

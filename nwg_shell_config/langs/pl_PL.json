@@ -37,6 +37,7 @@
   "backup-restore-success": "Pliki konfiguracyjne i dane odtworzone z kopii zapasowej.\nNaciśnij przycisk 'Zastosuj' aby zastosować zmiany.",
   "backup-restore-warning": "Ostrożnie, tej akcji nie można cofnąć!",
   "backgrounds": "Tapety",
+  "background-recursive-search": "Włącz wyszukiwanie w tle rekurencyjnym",
   "before-sleep": "Przed uśpieniem",
   "before-sleep-tooltip": "Komenda do wykonania zanim `systemd` uśpi komputer.",
   "bottom": "Dół",
